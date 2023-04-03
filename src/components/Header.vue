@@ -17,10 +17,6 @@
 					<li>Browse</li>
 				</router-link>
 
-				<router-link to="/categories" class="nav__item" exact-active-class="active__link">
-					<li>Categories</li>
-				</router-link>
-
 				<router-link to="/cart" class="nav__item" exact-active-class="active__link">
 					<li>Cart</li>
 				</router-link>

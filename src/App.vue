@@ -54,9 +54,8 @@ html, body {
 }
 
 #app {
-	height: 100%;
 	width: 100%;
-    background-color: var(--custom-color-light-1);
+    background-color: var(--custom-color-dark-1);
 }
 
 </style>

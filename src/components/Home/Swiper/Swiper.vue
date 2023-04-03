@@ -8,7 +8,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse</button>
+					<button class="section__details">Browse Category</button>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -26,7 +26,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse</button>
+					<button class="section__details">Browse Category</button>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -44,7 +44,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse</button>
+					<button class="section__details">Browse Category</button>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -62,7 +62,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse</button>
+					<button class="section__details">Browse Category</button>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -81,7 +81,7 @@ export default {};
 <style lang="scss" scoped>
 
 .swiper__container {
-	height: 100%;
+	height: 100vh;
 	max-height: 1000px;
 	--swiper-navigation-color: #000;
 	box-shadow: 0px 0px 2px #ffffff22, 0px 0px 10px #ffffff22;
@@ -204,5 +204,22 @@ export default {};
 			}
 		}
 	}
+}
+
+@media screen and (max-width: 900px){
+
+	.slide__container {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column !important;
+
+		.section {
+			height: 50% !important;
+			width: 100% !important;
+			max-width: unset !important;
+		}
+	}
+	
 }
 </style>

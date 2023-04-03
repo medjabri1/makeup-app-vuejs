@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import BrowseView from '../views/BrowseView.vue'
+import DetailsView from '../views/DetailsView.vue'
 
 Vue.use(VueRouter)
 
@@ -10,6 +12,18 @@ const routes = [
 		name: 'home',
 		component: HomeView,
 		meta: { title: 'Gleaming - Home' }
+	},
+	{
+		path: '/browse',
+		name: 'browse',
+		component: BrowseView,
+		meta: { title: 'Gleaming - Browse' }
+	},
+	{
+		path: '/details/:id',
+		name: 'Details',
+		component: DetailsView,
+		meta: { title: 'Gleaming - Details' }
 	},
 ]
 
