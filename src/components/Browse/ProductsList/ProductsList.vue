@@ -1,20 +1,9 @@
 <template>
     <div class="list__container">
         <div class="list__wrapper">
-            <h1 class="list__title">Products List</h1>
+            <h1 class="list__title">Products List ({{ products.length }})</h1>
             <div class="list__content">
-                <card :product="{'image': 'lip-gloss-1.jpg'}"></card>
-                <card :product="{'image': 'lipstick-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-2.jpg'}"></card>
-                <card :product="{'image': 'brushes-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-2.jpg'}"></card>
-                <card :product="{'image': 'lip-gloss-1.jpg'}"></card>
-                <card :product="{'image': 'lipstick-1.jpg'}"></card>
-                <card :product="{'image': 'lip-gloss-1.jpg'}"></card>
-                <card :product="{'image': 'lipstick-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-2.jpg'}"></card>
+                <card :product="product" v-for="product in products"></card>
             </div>
         </div>
     </div>
@@ -23,12 +12,14 @@
 <script>
 
 import Card from "@/components/Card.vue";
+import { mapState } from 'vuex';
 
 export default {
     name: 'ProductList',
     components: {
-        Card
-    }
+        Card,
+    },
+    computed: mapState(["products"]),
 }
 </script>
 

@@ -1,15 +1,15 @@
 <template>
 
     <div class="card__container">
-        <router-link class="card__content" to="/details/1">
+        <router-link class="card__content" :to="'/details/'+ product.id">
             <div class="card__cover">
-                <img class="image" :src="require('@/assets/Imgs/Makeup/'+ product.image)" alt="">
+                <img class="image" :src="product.imgs[0]" alt="">
             </div>
             <div class="card__text">
-                <h1 class="title">Brushes</h1>
-                <span class="price">290$</span>
+                <h1 class="title">{{ product.title }}</h1>
+                <span class="price">{{ product.price }} $</span>
             </div>
-            <span class="on-sale">60%</span>
+            <span class="on-sale" v-if="product.onSale">-{{ product.salePercent }}%</span>
         </router-link>
     </div>
 

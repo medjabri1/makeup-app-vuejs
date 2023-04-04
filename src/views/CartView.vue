@@ -4,13 +4,13 @@
 
         <div class="cart__wrapper">
 
-            <h1 class="cart__title">Products In Cart ({{ cart.length }})</h1>
+            <h1 class="cart__title">Products In Cart ({{ cartItems.length }})</h1>
 
-            <div class="cart__list" v-if="cart.length > 0">
-                <CartItem v-for="(item, index) in cart" :key="index"></CartItem>
+            <div class="cart__list" v-if="cartItems.length > 0">
+                <CartItem v-for="(item, index) in cartItems" :key="index" :item="item"></CartItem>
 
                 <div class="cart__total__price">
-                    total: {{ total }} $
+                    total: {{ total.toFixed(2) }} $
                 </div>
 
                 <router-link to="/checkout" class="proceed__checkout">Proceed to checkout</router-link>
@@ -42,8 +42,28 @@ export default {
     },
     data() {
         return {
-            total: 1900,
-            cart: [1, 2, 3]
+        }
+    },
+    computed: {
+        cartItems() {
+            return this.$store.getters.cart;
+        },
+        total() {
+            let items = this.cartItems;
+
+            let total = 0;
+
+            items.map(item => {
+
+                if(item.onSale) {
+                    total += (item.price - (item.price * item.salePercent / 100)) * item.quantity;
+                } else {
+                    total += (item.price * item.quantity);
+                }
+
+            });
+
+            return total;
         }
     }
 }
@@ -92,8 +112,9 @@ export default {
             }
 
             .proceed__checkout {
-                font-size: 1.2rem;
-                padding: 10px 20px;
+                margin-top: 15px;
+                font-size: 1rem;
+                padding: 10px 25px;
                 background-color: var(--custom-color-dark-3);
                 color: var(--custom-color-light-1);
                 border-radius: 5px;

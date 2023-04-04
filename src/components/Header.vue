@@ -38,7 +38,7 @@
 				
 				<router-link to="/cart" class="nav__item" exact-active-class="active__link">
 					<font-awesome-icon class="icon" :icon="['fas', 'bag-shopping']" />
-					<span class="cart__value">{{ cart__length }}</span>
+					<span class="cart__value">{{ cart.length }}</span>
 				</router-link>
 
 			</ul>
@@ -47,6 +47,7 @@
 </template>
 
 <script lang="ts">
+import { mapState } from 'vuex';
 
 
 export default {
@@ -54,15 +55,14 @@ export default {
 	data() {
 		return {
 			isButtonActive: false,
-			cart__length: 0
 		}
 	},
 	methods: {
 		toggleButtonActive() {
-			console.log("test")
 			this.isButtonActive = !this.isButtonActive;
 		}
-	}
+	},
+	computed: mapState(["cart"]),
 
 };
 </script>

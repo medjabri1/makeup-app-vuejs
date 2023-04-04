@@ -12,10 +12,10 @@
                     v-for="(category, index) in categories" 
                     :key="index"
                     :class="{'active': index == selectedIndex}"
-                    @click="() => selectedIndex = index"
+                    @click="(category.count) => { selectCategory(category.count) }"
                 >
-                    <span>{{ category }}</span>
-                    <span class="count">{{Math.round(Math.random()*100)}}</span>
+                    <span class="category__name">{{ category.category }}</span>
+                    <span class="count">{{ category.count }}</span>
                 </h2>
             </div>
         </div>
@@ -24,14 +24,48 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     name: 'CustomFilter',
 	data() {
 		return {
-			categories: ['All', 'Eyes', 'Lips', 'Face', 'Body'],
             selectedIndex: 0,
+            length: 0,
 		}
 	},
+    computed: {
+        products() {
+            return this.$store.getters.products;
+        },
+        categories() {
+            let result = [];
+            let found = [];
+            let categories__arr = [];
+
+            this.$store.getters.products.map((item) => {
+                categories__arr.push(item);
+            });
+            
+            result.push({ category: 'all', count: categories__arr.length})
+
+            let count = 0;
+            categories__arr.map((category) => {
+                if(found.indexOf(category.category) < 0) {
+                    result.push({ index: count, category: category.category, count: categories__arr.filter((item) => item.category == category.category).length })
+                    found.push(category.category);
+                    count++;
+                }
+            });
+            return result;
+        }
+    },
+    methods: {
+        selectCategory(index) {
+            this.selectedIndex = index;
+            console.log(this.categories[index], index);
+            // this.$emit('categoryChange', this.categories[index);
+        }
+    }
 }
 </script>
 
@@ -83,7 +117,7 @@ export default {
         .filter__categories {
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
 
             .category__item {
@@ -101,6 +135,10 @@ export default {
                 opacity: .8;
                 border-radius: 3px;
                 user-select: none;
+
+                .category__name {
+                    text-transform: capitalize;
+                }
 
                 .count {
                     opacity: .2;
@@ -125,7 +163,7 @@ export default {
 @media screen and (max-width:1000px) {
 
     .filter__categories {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }
 

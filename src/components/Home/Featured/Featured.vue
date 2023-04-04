@@ -3,10 +3,7 @@
         <div class="featured__wrapper">
             <h1 class="section__title">Featured Products</h1>
             <div class="featured__content">
-                <card :product="{'image': 'lip-gloss-1.jpg'}"></card>
-                <card :product="{'image': 'lipstick-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-1.jpg'}"></card>
-                <card :product="{'image': 'brushes-2.jpg'}"></card>
+                <card :product="product" v-for="product in products.slice(0, 4)" :key="product.id"></card>
             </div>
             <router-link to="/browse" class="button see-all">See All Products</router-link>
         </div>
@@ -16,13 +13,14 @@
 <script>
 
 import Card from "@/components/Card.vue"
+import { mapState } from 'vuex'
 
 export default {
     name: 'Featured',
     components: {
 		Card
-	}
-
+	},
+    computed: mapState(["products"]),
 }
 </script>
 

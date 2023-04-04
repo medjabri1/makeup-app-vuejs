@@ -3,19 +3,24 @@
 
         <div class="details__wrapper">
 
-            <h1 class="section__title">Product Details</h1>
+            <h1 class="section__title" v-if="product != undefined">Product Details</h1>
 
-            <div class="product__card">
+            <div class="product__card" v-if="product != undefined">
                 <div class="product__cover">
-                    <img :src="require('@/assets/Imgs/Makeup/' + product.image)" alt="">
+                    <img :src="product.imgs[selectedImage]" alt="">
+                    <div class="change__images">
+                        <img :src="product.imgs[0]" @mouseenter="selectImage(0)" alt="">
+                        <img :src="product.imgs[1]" @mouseenter="selectImage(1)" alt="">
+                        <img :src="product.imgs[2]" @mouseenter="selectImage(2)" alt="">
+                    </div>
                     <ShareToSocialMedia></ShareToSocialMedia>
                 </div>
                 
-                <h3 class="on-sale">-60%</h3>
+                <h3 class="on-sale" v-if="product.onSale">-{{ product.salePercent }}%</h3>
 
                 <div class="product__info">
                     <div class="section">
-                        <h1 class="product__name">Product Name</h1>
+                        <h1 class="product__name">{{ product.title }}</h1>
 
                         <Rating></Rating>
 
@@ -28,9 +33,13 @@
 
                     </div>
 
-                    <AddToCart></AddToCart>
+                    <AddToCart :product="product"></AddToCart>
 
                 </div>
+            </div>
+
+            <div v-else>
+                <h1>This product doesnt exist</h1>
             </div>
 
         </div>
@@ -44,6 +53,7 @@ import Rating from '@/components/Details/Rating/Rating.vue'
 import ProductColors from '@/components/Details/ProductColors/ProductColors.vue'
 import AddToCart from '@/components/Details/AddToCart/AddToCart.vue'
 import ShareToSocialMedia from '@/components/Details/ShareToSocialMedia/ShareToSocialMedia.vue'
+import router from '@/router'
 
 export default {
     name: 'DetailsView',
@@ -53,10 +63,22 @@ export default {
     },
     data() {
         return {
-            product: {
-                image: 'lip-gloss-1.jpg'
-            },
-            cart__count: 1
+            id: this.$route.params.id,
+            selectedImage: 0
+        }
+    },
+    methods: {
+        selectImage(index) {
+            this.selectedImage = index;
+        }
+    },
+    computed: {
+        product() {
+            let product = this.$store.getters.products.filter(product => product.id == this.id)[0];
+            if(product == undefined) {
+                // router.push('/Not-Found')
+            }
+            return product;
         }
     }
 }
@@ -76,6 +98,7 @@ export default {
         width: 100%;
         max-width: 1200px;
         height: fit-content;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -113,6 +136,32 @@ export default {
                     height: 500px;
                     object-fit: cover;
                     box-shadow: 0px 0px 2px #00000033, 0px 0px 8px #00000033;
+                }
+
+                .change__images {
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+
+                    img {
+                        height: 70px;
+                        width: 70px;
+                        margin: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: all 200ms ease-in-out;
+                        box-shadow: 0px 0px 1px #00000099, 0px 0px 10px #00000066, 0px 0px 20px #00000066;
+                        opacity: .8;
+                        
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
                 }
             }
 

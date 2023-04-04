@@ -3,7 +3,7 @@
     <div class="browse__container">
 
         <div class="browse__wrapper">
-            <CustomFilter></CustomFilter>
+            <CustomFilter @categoryChange="categoryChange"></CustomFilter>
 			<ProductsList></ProductsList>
         </div>
 
@@ -22,7 +22,11 @@ export default {
 	components: {
 		CustomFilter, ProductsList,
 	},
-
+	methods: {
+		categoryChange(category) {
+			console.log(category);
+		}
+	}
 }
 </script>
 

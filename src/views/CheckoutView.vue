@@ -19,6 +19,7 @@
 
 import BillComponent from "@/components/Checkout/BillComponent/BillComponent.vue"
 import PaymentDetails from "@/components/Checkout/PaymentDetails/PaymentDetails.vue"
+import router from '@/router'
 
 export default {
     components: {

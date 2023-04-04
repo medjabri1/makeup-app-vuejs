@@ -1,19 +1,19 @@
 <template>
     <div class="cart__item">
         <div class="section cover">
-            <img :src="require('@/assets/Imgs/Makeup/' + product.image)" alt="">
+            <img :src="item.image" alt="">
         </div>
 
         <div class="section info">
-            <router-link class="product__name" to="/details/1">Product Name</router-link>
-            <p class="unit__price">Unit: <span>290 $</span></p>
-            <p class="total__price">Total: <span>480 $</span></p>
+            <router-link class="product__name" to="/details/1">{{ item.title }}</router-link>
+            <p class="unit__price">Unit: <span>{{ price.toFixed(2) }} $</span></p>
+            <p class="total__price">Total: <span>{{ (price * item.quantity).toFixed(2) }} $</span></p>
         </div>
 
         <div class="section control">
             <div class="cart__control">
                 <font-awesome-icon class="icon" :icon="['fas', 'minus']"></font-awesome-icon>
-                <span>2</span>
+                <span>{{ item.quantity }}</span>
                 <font-awesome-icon class="icon" :icon="['fas', 'plus']"></font-awesome-icon>
             </div>
             <h3 class="delete__control">
@@ -26,12 +26,25 @@
 <script>
 export default {
     name: 'CartItem',
-    data() {
-        return {
-            product: {
-                image: 'lipstick-1.jpg'
-            },
-            cart__count: 1
+    props: {
+        item: {
+            type: Object,
+            required: true,
+        }
+    },
+    computed: {
+        cartItems() {
+            return this.$store.getters.cart;
+        },
+        price() {
+
+            let item = this.item;
+
+            if(item.onSale) {
+                return item.price - (item.price * item.salePercent / 100);
+            } else {   
+                return item.price;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@
             <label for="credit__card__number">
                 Credit Card Number
             </label>
-            <input type="number" class="credit__card__number" id="credit__card__number" placeholder="Credit Card Number" required>
+            <input type="number" :value="card__number" class="credit__card__number" id="credit__card__number" placeholder="Credit Card Number">
         </div>
         
         <div class="form__group">
@@ -15,21 +15,21 @@
                 <label for="credit__ccv">
                     CCV
                 </label>
-                <input type="number" min="1" max="999" step="1" value="000" class="credit__ccv" id="credit__ccv" placeholder="CCV" required>
+                <input type="number" :value="card__ccv" min="1" max="999" step="1" value="000" class="credit__ccv" id="credit__ccv" placeholder="CCV">
             </div>
 
             <div class="form__item">
                 <label for="credit__expiry__month">
                     Expiry Month
                 </label>
-                <input type="number" min="1" max="12" step="1" value="01" class="credit__expiry__month" id="credit__expiry__month" placeholder="Expiry Month" required>
+                <input type="number" :value="card__month" min="1" max="12" step="1" value="01" class="credit__expiry__month" id="credit__expiry__month" placeholder="Expiry Month">
             </div>
 
             <div class="form__item">
                 <label for="credit__expiry__year">
                     Expiry Year
                 </label>
-                <input type="number" min="1900" max="2099" step="1" value="2016" class="credit__expiry__year" id="credit__expiry__year" placeholder="Expiry Year" required>
+                <input type="number" :value="card__year" min="1900" max="2099" step="1" value="2016" class="credit__expiry__year" id="credit__expiry__year" placeholder="Expiry Year">
             </div>
         </div>
 
@@ -43,6 +43,14 @@
 <script>
 export default {
     name: 'PaymentDetails',
+    data() {
+        return {
+            card__number: 0,
+            card__ccv: 0,
+            card__month: 1,
+            card__year: 2015,
+        }
+    },
     props: {},
     methods: {
         onSubmit(e) {
@@ -96,13 +104,22 @@ export default {
             outline: none;
             border: 2px solid var(--custom-color-dark-3);
 
+            &::-webkit-inner-spin-button {
+                display: none;
+            }
+
+            &:focus {
+                border: 2px solid #2e6cd8;
+            }
+
             &[type="submit"] {
-                background-color: #2e6cd8;
+                background-color: var(--custom-color-dark-1);
                 color: var(--custom-color-light-1);
                 text-transform: uppercase;
                 font-weight: 400;
                 cursor: pointer;
                 transition: all 200ms ease-in-out;
+                margin-top: 20px;
 
                 &:hover {
                     opacity: .9;

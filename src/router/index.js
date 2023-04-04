@@ -73,6 +73,7 @@ router.beforeEach((to, from, next) => {
 	if(title) {
 		document.title = title;
 	}
+	window.scrollTo(0, 0);
 	next();
 })
 

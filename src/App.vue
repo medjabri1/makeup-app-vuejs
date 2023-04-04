@@ -11,11 +11,17 @@
 import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
 
+import axios from "axios";
+
 export default {
     name: 'HomeView',
     components: {
 		Header, Footer
-	}
+	},
+	created() {
+		this.$store.dispatch("fetchProducts");
+		this.$store.dispatch("fetchCartItems");
+	},
 }
 
 </script>
@@ -47,7 +53,7 @@ html, body {
 	--custom-color-dark-3: #232323;
 	
 	// LIGHT COLORS
-	--custom-color-light-1: #F9F9F9;
+	--custom-color-light-1: #FaFaFa;
 	--custom-color-light-2: #F0F0F0;
 	--custom-color-light-3: #E0E0E0;
 	

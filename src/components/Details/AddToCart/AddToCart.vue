@@ -1,13 +1,16 @@
 <template>
     <div class="section">
-        <h3 class="price"><span class="original">380</span><span class="current">290 $</span></h3>
+        <h3 class="price">
+            <span class="original" v-if="product.onSale">{{ product.price }}</span>
+            <span class="current">{{ (product.price - product.price * product.salePercent / 100).toFixed(2) }} $</span>
+        </h3>
         <div class="cart">
             <div class="cart__control">
-                <font-awesome-icon class="icon" :icon="['fas', 'plus']" />
+                <font-awesome-icon class="icon" :icon="['fas', 'plus']" @click="increase" />
                 <span class="cart__count">{{ cart__count }}</span>
-                <font-awesome-icon class="icon" :icon="['fas', 'minus']" />
+                <font-awesome-icon class="icon" :icon="['fas', 'minus']" @click="decrease"/>
             </div>
-            <h3 class="add__to__cart">
+            <h3 class="add__to__cart" @click="submitAddToCart">
                 <font-awesome-icon class="icon" :icon="['fas', 'cart-plus']" />
                 <span>Add To Cart</span>
             </h3>
@@ -16,15 +19,43 @@
 </template>
 
 <script>
+import CartService from '@/Services/CartService';
 
 export default {
     name: 'AddToCart',
 
-    props: {},
+    props: {
+        product: {
+            type: Object,
+            required: true,
+        }
+    },
 
     data() {
         return {
             cart__count: 1,
+        }
+    },
+
+    methods: {
+        increase() {
+            this.cart__count += 1;
+        },
+        decrease() {
+            this.cart__count -= 1;
+        },
+        submitAddToCart() {
+
+            let new__item = this.product;
+            new__item['productId'] = new__item['id'];
+            delete new__item['id'];
+
+            CartService.addItemToCart({...new__item, quantity: this.cart__count})
+                .then(res => {
+                    console.log(res);
+                    this.$store.dispatch("fetchCartItems");
+                });
+
         }
     }
 }
