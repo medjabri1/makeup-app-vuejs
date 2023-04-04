@@ -35,7 +35,7 @@ export default {
     .browse__wrapper {
 		height:100%;
 		width: 100%;
-		max-width: 2000px;
+		max-width: 1200px;
 		margin: 0px auto;
 		box-shadow: 0px 0px 2px #00000033, 0px 0px 10px #00000033;
     }

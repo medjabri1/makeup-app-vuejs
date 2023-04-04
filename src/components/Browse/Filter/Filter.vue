@@ -7,21 +7,15 @@
                 <input type="text" placeholder="Search items">
             </div>
             <div class="filter__categories">
-                <h2 class="category__item active">
-                    <span>All</span>
-                    <span class="count">45</span>
-                </h2>
-                <h2 class="category__item">
-                    <span>Eyes</span>
-                    <span class="count">12</span>
-                </h2>
-                <h2 class="category__item">
-                    <span>Lips</span>
-                    <span class="count">25</span>
-                </h2>
-                <h2 class="category__item">
-                    <span>Face</span>
-                    <span class="count">18</span>
+                <h2 
+                    class="category__item" 
+                    v-for="(category, index) in categories" 
+                    :key="index"
+                    :class="{'active': index == selectedIndex}"
+                    @click="() => selectedIndex = index"
+                >
+                    <span>{{ category }}</span>
+                    <span class="count">{{Math.round(Math.random()*100)}}</span>
                 </h2>
             </div>
         </div>
@@ -31,7 +25,13 @@
 
 <script>
 export default {
-    name: 'CustomFilter'
+    name: 'CustomFilter',
+	data() {
+		return {
+			categories: ['All', 'Eyes', 'Lips', 'Face', 'Body'],
+            selectedIndex: 0,
+		}
+	},
 }
 </script>
 
@@ -83,7 +83,7 @@ export default {
         .filter__categories {
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
 
             .category__item {
@@ -100,6 +100,7 @@ export default {
                 justify-content: space-between;
                 opacity: .8;
                 border-radius: 3px;
+                user-select: none;
 
                 .count {
                     opacity: .2;
@@ -124,7 +125,7 @@ export default {
 @media screen and (max-width:1000px) {
 
     .filter__categories {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 }
 

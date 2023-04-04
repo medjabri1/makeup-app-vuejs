@@ -61,6 +61,7 @@ export default {
             height: 100%;
             width: 100%;
             overflow: hidden;
+            user-select: none;
             
             .image {
                 height: 300px;
@@ -100,6 +101,7 @@ export default {
             right: 0px;
             padding: 5px 15px;
             background-color: #e44d4d;
+            user-select: none;
         }
     }
 
