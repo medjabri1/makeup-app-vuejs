@@ -19,7 +19,13 @@ export default {
     components: {
         Card,
     },
-    computed: mapState(["products"]),
+    props: {
+        products: {
+            type: Array,
+            required: true,
+        }
+    }
+    // computed: mapState(["products"]),
 }
 </script>
 
@@ -53,6 +59,7 @@ export default {
         }
 
         .list__content {
+            width: 100%;
             margin: 20px;
             height: 100%;
             display: grid;
@@ -63,7 +70,14 @@ export default {
     }
 }
 
-@media screen and (max-width:1000px) {
+@media screen and (max-width:1100px) {
+
+    .list__content {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media screen and (max-width:800px) {
 
     .list__content {
         grid-template-columns: repeat(2, 1fr) !important;

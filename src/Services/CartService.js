@@ -7,5 +7,11 @@ export default {
     },
     addItemToCart(item) {
         return apiClient.post("/cart", item);
-    }
+    },
+    deleteItemFromCart(id) {
+        return apiClient.delete("/cart/"+id);
+    },
+    updateItem(item) {
+        return apiClient.put("/cart/"+item.id, item);
+    },
 };

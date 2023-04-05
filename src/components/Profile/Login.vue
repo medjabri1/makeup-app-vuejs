@@ -1,21 +1,32 @@
 <template>
 
-    <form class="login__form">
+    <form class="login__form" @submit.prevent="onSubmit" id="login__form">
 
         <h1 class="signup__headline">Log In</h1>
         <h3 class="signup__sub__headline">Welcome Back!</h3>
 
         <div class="form__item">
             <label for="login__email">Email Address</label>
-            <input type="text" :value="login__email" placeholder="Enter your email">
+            <input 
+                type="email" 
+                id="login__email" 
+                @input="(e) => { login__email = e.target.value }" 
+                :value="login__email" 
+                placeholder="Enter your email">
         </div>
 
         <div class="form__item">
-            <label for="login__email">Password</label>
-            <input type="text" :value="login__email" placeholder="Enter your email">
+            <label for="login__password">Password</label>
+            <input 
+                type="password" 
+                id="login__password" 
+                @input="(e) => { login__password = e.target.value }" 
+                :value="login__password" 
+                placeholder="Enter your email">
         </div>
 
         <p class="form__message">Lost your password ?</p>
+        <p class="error" v-if="hasError">{{ error }}</p>
 
         <div class="form__item">
             <input type="submit" value="Log In">
@@ -31,7 +42,46 @@ export default {
     data() {
         return {
             login__email: '',
-            login__password: ''
+            login__password: '',
+            hasError: false,
+            error: ''
+        }
+    },
+    methods: {
+        onSubmit() {
+            let credentials = {
+                email: this.login__email,
+                password: this.login__password,
+            }
+
+            let users = this.$store.getters.users;
+
+            let found = false;
+            let current_user = {};
+
+            users.map((usr) => {
+                if(usr.email == this.login__email) {
+                    found = true;
+                    current_user = usr;
+                }
+            })
+
+            if(found) {
+
+                if(current_user.password == this.login__password) {
+
+                    this.$store.dispatch("SET_USER", current_user);
+                    this.hasError = false;
+
+                } else {
+                    this.hasError = true;
+                    this.error = "Incorrect Password"
+                }
+
+            } else {
+                this.hasError = true;
+                this.error = "Email doesnt exist"
+            }
         }
     }
 }

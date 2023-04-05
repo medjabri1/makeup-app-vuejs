@@ -1,6 +1,6 @@
 <template>
 
-    <form class="signup__form">
+    <form class="signup__form" @submit.prevent="onSubmit" id="signup__form">
 
         <h1 class="signup__headline">Sign Up</h1>
         <h3 class="signup__sub__headline">Create new account</h3>
@@ -9,28 +9,50 @@
 
             <div class="form__item">
                 <label for="signup__last__name">Last Name</label>
-                <input type="text" :value="signup__last__name" placeholder="Enter your Last Name">
+                <input 
+                    type="text" 
+                    id="signup__last__name" 
+                    :value="signup__last__name" 
+                    @input="(e) => { signup__last__name = e.target.value }"
+                    placeholder="Enter your Last Name">
             </div>
             
             <div class="form__item">
                 <label for="signup__first__name">First Name</label>
-                <input type="text" :value="signup__first__name" placeholder="Enter your First Name">
+                <input 
+                    type="text" 
+                    id="signup__first__name" 
+                    :value="signup__first__name" 
+                    @input="(e) => { signup__first__name = e.target.value }"
+                    placeholder="Enter your First Name">
             </div>
 
         </div>
 
         <div class="form__item">
             <label for="signup__email">Email Address</label>
-            <input type="text" :value="signup__email" placeholder="Enter your email">
+            <input 
+                type="email" 
+                id="signup__email" 
+                :value="signup__email" 
+                @input="(e) => { signup__email = e.target.value }"
+                placeholder="Enter your email">
         </div>
 
         <div class="form__item">
-            <label for="signup__email">Password</label>
-            <input type="text" :value="signup__email" placeholder="Enter your email">
+            <label for="signup__password">Password</label>
+            <input 
+                type="password" 
+                id="signup__password" 
+                :value="signup__password" 
+                @input="(e) => { signup__password = e.target.value }"
+                placeholder="Enter your Password">
         </div>
 
+        <p class="error" v-if="hasError">{{ error }}</p>
+
         <div class="form__item">
-            <input type="submit" value="Sign Up">
+            <input type="submit" :value="loading ? 'Loading' : 'Submit'" :disabled="loading">
         </div>
 
     </form>
@@ -38,6 +60,7 @@
 </template>
 
 <script>
+import UserService from '@/Services/UserService'
 export default {
     name: 'signup',
     data() {
@@ -45,7 +68,56 @@ export default {
             signup__first__name: '',
             signup__last__name: '',
             signup__email: '',
-            signup__password: ''
+            signup__password: '',
+            loading: false,
+            hasError: false,
+            error: ''
+        }
+    },
+    methods: {
+        onSubmit() {
+
+            if(
+                this.signup__email.trim() == '' || 
+                this.signup__password.trim() == '' || 
+                this.signup__first__name.trim() == '' ||
+                this.signup__last__name.trim() == ''
+            ) {
+                this.hasError = true;
+                this.error = 'Please fill all fields'
+                return;
+            }
+
+            let user = {
+                first_name: this.signup__first__name,
+                last_name: this.signup__last__name,
+                email: this.signup__email,
+                password: this.signup__password,
+            };
+
+            let users = this.$store.getters.users;
+
+            let found = false;
+
+            users.map((user) => {
+                console.log(user.email, this.signup__email);
+                if(user.email == this.signup__email) {
+                    found = true;
+                }
+            })
+
+            if(found) {
+                this.hasError = true;
+                this.error = "Email already used";
+                return;
+            } else {
+                UserService.addUser(user)
+                    .then((res) => {
+                        this.$store.dispatch("fetchUsers");
+                    })
+            }
+
+            document.getElementById("signup__form").reset();
         }
     }
 }

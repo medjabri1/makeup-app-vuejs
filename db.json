@@ -115,51 +115,28 @@
   ],
   "cart": [
     {
-      "title": "Peachy Lipstick",
-      "category": "lips",
-      "price": 135.99,
-      "onSale": true,
-      "image": "https://images.unsplash.com/photo-1537277033580-8792f1e42c47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "salePercent": 40,
-      "imgs": [
-        "https://images.unsplash.com/photo-1537277033580-8792f1e42c47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-        "https://images.unsplash.com/photo-1537277033580-8792f1e42c47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-        "https://images.unsplash.com/photo-1620804587331-effc68d47d7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
-      ],
-      "productId": 911046,
-      "quantity": 6,
-      "id": 1
-    },
-    {
-      "title": "Maskara",
+      "title": "Eyeshadow Palette",
       "category": "eye",
-      "price": 33.99,
-      "onSale": true,
-      "image": "https://images.unsplash.com/photo-1650664370914-f026578ec2a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=769&q=80",
-      "salePercent": 30,
+      "price": 300.99,
+      "onSale": false,
+      "image": "https://images.unsplash.com/photo-1621151927841-ac2ee62f0333?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
+      "salePercent": 0,
       "imgs": [
-        "https://images.unsplash.com/photo-1650664370914-f026578ec2a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=769&q=80",
-        "https://images.unsplash.com/photo-1590156546946-ce55a12a6a5d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1935&q=80",
-        "https://images.unsplash.com/photo-1596704017254-9b121068fb31?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1935&q=80"
+        "https://images.unsplash.com/photo-1621151927841-ac2ee62f0333?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
+        "https://images.unsplash.com/photo-1617220376311-1b90accbb9e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        "https://images.unsplash.com/photo-1621151927841-ac2ee62f0333?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
       ],
-      "productId": 911468,
-      "quantity": 3,
-      "id": 2
-    },
-    {
-      "title": "Maskara",
-      "category": "eye",
-      "price": 33.99,
-      "onSale": true,
-      "image": "https://images.unsplash.com/photo-1650664370914-f026578ec2a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=769&q=80",
-      "salePercent": 30,
-      "imgs": [
-        "https://images.unsplash.com/photo-1650664370914-f026578ec2a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=769&q=80",
-        "https://images.unsplash.com/photo-1590156546946-ce55a12a6a5d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1935&q=80",
-        "https://images.unsplash.com/photo-1596704017254-9b121068fb31?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1935&q=80"
-      ],
-      "quantity": 3,
+      "quantity": 10,
       "id": 3
+    }
+  ],
+  "users": [
+    {
+      "first_name": "Mohammed",
+      "last_name": "JABRI",
+      "email": "test@gmail.com",
+      "password": "test",
+      "id": 1
     }
   ]
 }

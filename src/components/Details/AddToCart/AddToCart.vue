@@ -39,9 +39,11 @@ export default {
 
     methods: {
         increase() {
+            if(this.cart__count >= 10) return;
             this.cart__count += 1;
         },
         decrease() {
+            if(this.cart__count <= 1) return;
             this.cart__count -= 1;
         },
         submitAddToCart() {
@@ -50,11 +52,35 @@ export default {
             new__item['productId'] = new__item['id'];
             delete new__item['id'];
 
-            CartService.addItemToCart({...new__item, quantity: this.cart__count})
-                .then(res => {
-                    console.log(res);
-                    this.$store.dispatch("fetchCartItems");
+            let previous__item;
+            let found = false;
+
+            this.$store.getters.cart.map((cart__item) => {
+                console.log(cart__item.productId, new__item.productId);
+                if(cart__item.productId == new__item.productId) {
+                    previous__item = cart__item;
+                    found = true;
+                }
+            });
+
+            if(!found) {
+                CartService.addItemToCart({...new__item, quantity: this.cart__count})
+                    .then(res => {
+                        this.$store.dispatch("fetchCartItems");
+                        this.$store.dispatch("fetchProducts");
+                    });
+            } else {
+                let new__data = { ...previous__item, quantity: previous__item.quantity+this.cart__count}
+
+                CartService.updateItem(new__data)
+                .then((res) => {
+                    this.loading = false;
+                    this.$store.dispatch("updateCartItem", new__data)
                 });
+            }
+
+            this.cart__count = 0;
+
 
         }
     }

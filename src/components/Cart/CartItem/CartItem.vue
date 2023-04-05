@@ -5,18 +5,18 @@
         </div>
 
         <div class="section info">
-            <router-link class="product__name" to="/details/1">{{ item.title }}</router-link>
+            <router-link class="product__name" :to="'/details/'+ item.productId">{{ item.title }}</router-link>
             <p class="unit__price">Unit: <span>{{ price.toFixed(2) }} $</span></p>
             <p class="total__price">Total: <span>{{ (price * item.quantity).toFixed(2) }} $</span></p>
         </div>
 
         <div class="section control">
             <div class="cart__control">
-                <font-awesome-icon class="icon" :icon="['fas', 'minus']"></font-awesome-icon>
+                <font-awesome-icon class="icon" :icon="['fas', 'minus']" @click="changeQuantity(item.id, -1)"></font-awesome-icon>
                 <span>{{ item.quantity }}</span>
-                <font-awesome-icon class="icon" :icon="['fas', 'plus']"></font-awesome-icon>
+                <font-awesome-icon class="icon" :icon="['fas', 'plus']" @click="changeQuantity(item.id, 1)"></font-awesome-icon>
             </div>
-            <h3 class="delete__control">
+            <h3 class="delete__control" @click="onDelete(item.id)" >
                 <font-awesome-icon class="icon" :icon="['fas', 'xmark']"></font-awesome-icon>
             </h3>
         </div>
@@ -24,8 +24,14 @@
 </template>
 
 <script>
+import CartService from '@/Services/CartService';
 export default {
     name: 'CartItem',
+    data() {
+        return {
+            loading: false,
+        }
+    },
     props: {
         item: {
             type: Object,
@@ -45,6 +51,47 @@ export default {
             } else {   
                 return item.price;
             }
+        }
+    },
+    methods: {
+        onDelete(id) {
+
+            if(this.loading) {
+                // ANOTHER ACTION IS BEING EXECUTED
+                return;
+            }
+
+            this.loading = true;
+
+            CartService.deleteItemFromCart(id)
+                .then((res) => {
+                    this.loading = false;
+                    this.$store.dispatch("removeItemFromCart", id)
+                });
+        },
+        changeQuantity(id, quantity) {
+
+            if(this.loading) {
+                // ANOTHER ACTION IS BEING EXECUTED
+                return;
+            }
+
+            this.loading = true;
+
+            let newQuantity = this.item.quantity + quantity;
+
+            if((newQuantity < 1 && newQuantity < this.item.quantity) || (newQuantity > 10 && newQuantity > this.item.quantity)) {
+                this.loading = false;
+                return;
+            } 
+
+            let new__item = { ...this.item, quantity: newQuantity };
+
+            CartService.updateItem(new__item)
+                .then((res) => {
+                    this.loading = false;
+                    this.$store.dispatch("updateCartItem", new__item)
+                });
         }
     }
 }

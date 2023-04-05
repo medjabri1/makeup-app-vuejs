@@ -4,7 +4,6 @@
 
         <div class="profile__wrapper">
 
-
             <div class="profile__content">
                 <div class="section cover">
                     <img v-if="show__login" src="@/assets/Imgs/Products/About/Products-1.jpg" alt="">
@@ -38,9 +37,14 @@ export default {
     },
     data() {
         return {
-            show__login: false,
+            show__login: true,
         }
     },
+    computed: {
+        users() {
+            return this.$store.getters.users;
+        }
+    }, 
     methods: {
         toggleShowLogin() {
             this.show__login = !this.show__login;

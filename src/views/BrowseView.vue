@@ -3,8 +3,8 @@
     <div class="browse__container">
 
         <div class="browse__wrapper">
-            <CustomFilter @categoryChange="categoryChange"></CustomFilter>
-			<ProductsList></ProductsList>
+            <CustomFilter @categoryChange="categoryChange" @searchChange="searchChange"></CustomFilter>
+			<ProductsList :products="this.products"></ProductsList>
         </div>
 
     </div>
@@ -19,12 +19,39 @@ import ProductsList from '@/components/Browse/ProductsList/ProductsList.vue'
 
 export default {
     name:"Browse",
+	data() {
+		return {
+			filter: 'all',
+			searchQuery: ''
+		}
+	},
 	components: {
 		CustomFilter, ProductsList,
 	},
+	computed: {
+		products() {
+			let products = this.$store.getters.products;
+			let result = [];
+
+			if(this.filter == 'all' || this.filter == '') {
+				result = products;
+			} else {
+				result = products.filter((item) => item.category === this.filter);
+			}
+
+			// console.log(this.filter);
+			// console.log(products.filter((item) => item.category === this.filter).length);
+
+			// console.log(result);
+			return result;
+		}
+	},
 	methods: {
 		categoryChange(category) {
-			console.log(category);
+			this.filter = category;
+		},
+		searchChange(query) {
+			this.$store.dispatch("fetchProducts", query);
 		}
 	}
 }

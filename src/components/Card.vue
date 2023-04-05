@@ -7,7 +7,9 @@
             </div>
             <div class="card__text">
                 <h1 class="title">{{ product.title }}</h1>
-                <span class="price">{{ product.price }} $</span>
+                <h3 class="category">{{ product.category }}</h3>
+                <span class="original__price" v-if="product.onSale">{{ product.price }} $</span>
+                <span class="price">{{ (product.price - (product.price * product.salePercent / 100)).toFixed(2) }} $</span>
             </div>
             <span class="on-sale" v-if="product.onSale">-{{ product.salePercent }}%</span>
         </router-link>
@@ -31,7 +33,9 @@ export default {
 <style lang="scss" scoped>
 
 .card__container {
-    height: fit-content;
+    // height: fit-content;
+    height: 100%;
+    width: 100%;
     // border-radius: 2px;
     overflow: hidden;
     background-color: var(--custom-color-light-1);
@@ -56,6 +60,8 @@ export default {
         height: 100%;
         width: 100%;
         position: relative;
+        display: grid;
+        grid-template-rows: 2fr 1fr;
         
         .card__cover {
             height: 100%;
@@ -81,12 +87,43 @@ export default {
             .title {
                 font-size: 1.3rem;
                 font-weight: 800;
-                margin-bottom: 10px;
                 color: #e44d4d;
+            }
+
+            .category {
+                font-size: 1rem;
+                font-weight: 800;
+                margin-bottom: 10px;
+                opacity: .6;
+                color: #e44d4d;
+                text-transform: capitalize;
+            }
+            
+            .original__price {
+                font-size: .9rem;
+                font-weight: 800;
+                padding: 5px 15px;
+                // background-color: #e44d4d;
+                // color: var(--custom-color-light-1);
+                align-self: flex-end;
+                position: relative;
+                opacity: .5;
+                margin-right: 20px;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: calc(50% - 2px);
+                    left: 0;
+                    height: 1px;
+                    width: calc(90%);
+                    background-color: var(--custom-color-dark-1);
+                    transform: rotate(-10deg);
+                }
             }
             
             .price {
-                font-size: 1.2rems;
+                font-size: 1.2rem;
                 font-weight: 800;
                 padding: 5px 15px;
                 // background-color: #e44d4d;

@@ -21,6 +21,7 @@ export default {
 	created() {
 		this.$store.dispatch("fetchProducts");
 		this.$store.dispatch("fetchCartItems");
+		this.$store.dispatch("fetchUsers");
 	},
 }
 

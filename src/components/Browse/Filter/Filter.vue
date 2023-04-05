@@ -4,7 +4,7 @@
         <div class="filter__wrapper">
             <h1 class="filter__title">Filter Products</h1>
             <div class="search__input">
-                <input type="text" placeholder="Search items">
+                <input :value="searchQuery" type="text" placeholder="Search items" @input="(e) => onChange(e)">
             </div>
             <div class="filter__categories">
                 <h2 
@@ -12,7 +12,7 @@
                     v-for="(category, index) in categories" 
                     :key="index"
                     :class="{'active': index == selectedIndex}"
-                    @click="(category.count) => { selectCategory(category.count) }"
+                    @click="selectCategory(index)"
                 >
                     <span class="category__name">{{ category.category }}</span>
                     <span class="count">{{ category.count }}</span>
@@ -31,6 +31,7 @@ export default {
 		return {
             selectedIndex: 0,
             length: 0,
+            searchQuery: ''
 		}
 	},
     computed: {
@@ -62,8 +63,11 @@ export default {
     methods: {
         selectCategory(index) {
             this.selectedIndex = index;
-            console.log(this.categories[index], index);
-            // this.$emit('categoryChange', this.categories[index);
+            this.$emit('categoryChange', this.categories[index]['category']);
+        },
+        onChange(e) {
+            this.searchQuery = e.target.value;
+            this.$emit('searchChange', this.searchQuery);
         }
     }
 }
