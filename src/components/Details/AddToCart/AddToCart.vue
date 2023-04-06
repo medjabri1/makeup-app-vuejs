@@ -4,7 +4,7 @@
             <span class="original" v-if="product.onSale">{{ product.price }}</span>
             <span class="current">{{ (product.price - product.price * product.salePercent / 100).toFixed(2) }} $</span>
         </h3>
-        <div class="cart">
+        <div class="cart" v-if="isUserAlreadyLogged">
             <div class="cart__control">
                 <font-awesome-icon class="icon" :icon="['fas', 'plus']" @click="increase" />
                 <span class="cart__count">{{ cart__count }}</span>
@@ -36,7 +36,11 @@ export default {
             cart__count: 1,
         }
     },
-
+    computed: {
+        isUserAlreadyLogged() {
+            return this.$store.getters.user.loggedIn;
+        },
+    },
     methods: {
         increase() {
             if(this.cart__count >= 10) return;

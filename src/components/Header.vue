@@ -62,7 +62,14 @@ export default {
 			this.isButtonActive = !this.isButtonActive;
 		}
 	},
-	computed: mapState(["cart"]),
+	computed: {
+		cart() {
+			return this.$store.getters.cart;
+		},
+		user() {
+			return this.$store.getters.user;
+		}
+	},
 
 };
 </script>

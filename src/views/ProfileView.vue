@@ -4,19 +4,24 @@
 
         <div class="profile__wrapper">
 
-            <div class="profile__content">
+            <div class="profile__content" v-if="!loggedIn && !isUserAlreadyLogged">
                 <div class="section cover">
                     <img v-if="show__login" src="@/assets/Imgs/Products/About/Products-1.jpg" alt="">
                     <img v-else src="@/assets/Imgs/Products/About/Products-2.jpg" alt="">
                 </div>
 
                 <div class="section">
-                    <Login v-if="show__login"></Login>
+                    <Login v-if="show__login || !signedUp" @loggedIn="toggleLoggedIn"></Login>
                     <Signup v-else></Signup>
 
                     <h3 class="profile__message" @click="toggleShowLogin" v-if="show__login">Dont have account ? <span>Sign up!</span></h3>
                     <h3 class="profile__message" @click="toggleShowLogin" v-else>Already have account, <span>Log in!</span></h3>
                 </div>
+            </div>
+
+            <div v-else class="logged__profile__message">
+                <h1 class="message" v-if="loggedIn || isUserAlreadyLogged">You are now logged in</h1>
+                <h3 class="log__out" @click="logOut">Log out</h3>
             </div>
 
         </div>
@@ -37,17 +42,29 @@ export default {
     },
     data() {
         return {
-            show__login: true,
+            show__login: !this.$store.getters.signedIn,
+            loggedIn: false,
+            signedUp: true,
+            
         }
     },
     computed: {
-        users() {
-            return this.$store.getters.users;
+        user() {
+            return this.$store.getters.user;
+        },
+        isUserAlreadyLogged() {
+            return this.$store.getters.user.loggedIn;
         }
     }, 
     methods: {
         toggleShowLogin() {
             this.show__login = !this.show__login;
+        },
+        toggleLoggedIn() {
+            this.loggedIn = true;
+        },
+        logOut() {
+            this.$store.dispatch("logOut");
         }
     }
 }
@@ -77,6 +94,40 @@ export default {
             margin: 10px;
             margin-top: 50px;
             margin-bottom: 30px;
+        }
+
+        .logged__profile__message {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: -100px;
+
+            .message {
+                font-size: 1.5rem;
+                font-weight: 800;
+                // background-color: var(--custom-color-light-1);
+                // color: var(--custom-color-dark-1);
+                padding: 20px 40px;
+                border-radius: 2px;
+            }
+            
+            .log__out {
+                font-size: 1.1rem;
+                font-weight: 800;
+                background-color: var(--custom-color-light-1);
+                color: var(--custom-color-dark-1);
+                padding: 10px 25px;
+                border-radius: 2px;
+                cursor: pointer;
+                transition: all 200ms ease-in-out;
+
+                &:hover {
+                    opacity: .9;
+                }
+            }
         }
 
         .profile__content {
@@ -139,13 +190,17 @@ export default {
 
 @media screen and (max-width: 1000px) {
     
-    .profile__content {
-
-        grid-template-columns: 1fr !important;
-        width: 100%;
-
-        .section.cover {
-            display: none;
+    .profile__wrapper {
+        max-width: 700px !important;
+        
+        .profile__content {
+    
+            grid-template-columns: 1fr !important;
+            width: 100%;
+    
+            .section.cover {
+                display: none;
+            }
         }
     }
 }

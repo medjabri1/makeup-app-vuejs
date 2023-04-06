@@ -10,8 +10,7 @@
             <input 
                 type="email" 
                 id="login__email" 
-                @input="(e) => { login__email = e.target.value }" 
-                :value="login__email" 
+                v-model="login__email" 
                 placeholder="Enter your email">
         </div>
 
@@ -20,8 +19,7 @@
             <input 
                 type="password" 
                 id="login__password" 
-                @input="(e) => { login__password = e.target.value }" 
-                :value="login__password" 
+                v-model="login__password" 
                 placeholder="Enter your email">
         </div>
 
@@ -37,6 +35,9 @@
 </template>
 
 <script>
+
+import UserService from '@/Services/UserService'
+
 export default {
     name: 'Login',
     data() {
@@ -44,44 +45,37 @@ export default {
             login__email: '',
             login__password: '',
             hasError: false,
-            error: ''
+            error: '',
+            loggedIn: false,
         }
     },
     methods: {
         onSubmit() {
-            let credentials = {
-                email: this.login__email,
+            let user = {
+                email: this.login__email.trim(),
                 password: this.login__password,
             }
 
-            let users = this.$store.getters.users;
-
-            let found = false;
-            let current_user = {};
-
-            users.map((usr) => {
-                if(usr.email == this.login__email) {
-                    found = true;
-                    current_user = usr;
-                }
-            })
-
-            if(found) {
-
-                if(current_user.password == this.login__password) {
-
-                    this.$store.dispatch("SET_USER", current_user);
-                    this.hasError = false;
-
-                } else {
-                    this.hasError = true;
-                    this.error = "Incorrect Password"
-                }
-
-            } else {
+            if(user.email.length < 1 || user.password.length < 1) {
                 this.hasError = true;
-                this.error = "Email doesnt exist"
+                this.error = 'Please fill all fields';
+                return;
             }
+
+            UserService.login(user)
+                .then((res) => {
+                    // console.log(res);
+                    this.$emit("loggedIn");
+
+                    this.$store.dispatch("logState");
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let message = err.code;
+                    this.hasError = true;
+                    this.error = message;
+                    return;
+                });
         }
     }
 }
@@ -121,6 +115,17 @@ export default {
         width: 100%;
         max-width: 500px;
         text-align: end;
+    } 
+
+    .error {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: .9rem;
+        color: #F00;
+        margin-bottom: 10px;
+        width: 100%;
+        max-width: 500px;
+        font-weight: 700;
     } 
 
     .form__item {

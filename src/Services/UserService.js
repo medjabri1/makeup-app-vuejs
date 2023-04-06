@@ -1,12 +1,27 @@
 import { apiClient } from "./axiosConfig";
 
-const BIN_ID = '642c3c33ebd26539d0a46517';
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    getAuth, 
+    setPersistence, 
+    browserSessionPersistence,
+    localSessionPersistence
+} from "firebase/auth";
+
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+import { auth, app } from "@/firebaseConfig";
 
 export default {
-    getUsers() {
-        return apiClient.get("/users");
+    register(user) {
+        return createUserWithEmailAndPassword(auth, user.email, user.password);
     },
-    addUser(user) {
-        return apiClient.post("/users", user);
-    }
+
+    login(user) {
+        // return setPersistence(auth, browserSessionPersistence).then(() => {
+            return signInWithEmailAndPassword(auth, user.email, user.password);
+        // })
+    },
 };

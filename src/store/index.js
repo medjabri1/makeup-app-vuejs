@@ -4,46 +4,66 @@ import UserService from '@/Services/UserService';
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import {
+    signOut 
+} from "firebase/auth";
+
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+import { auth } from "@/firebaseConfig";
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
         products: [],
         cart: [],
-        users: [],
-        user: {},
+        user: {
+            loggedIn: false,
+            data: {}
+        },
+        signedIn: false
     },
     getters: {
         products: (state) => state.products,
         cart: (state) => state.cart,
-        users: (state) => state.users,
         user: (state) => state.user,
+        signedIn: (state) => state.signedIn,
     },
     mutations: {
+
+        // PRODUCT 
         SET_PRODUCTS(state, products) {
             state.products = products;
         },
+
+        // CART
         SET_CART(state, cart) {
             state.cart = cart;
-        },
-        SET_USER(state, user) {
-            state.user = user;
-        },
-        SET_USERS(state, users) {
-            state.users = users;
         },
         REMOVE_CART_ITEM(state, id) {
             state.cart = state.cart.filter((item) => item.id != id);
         },
         UPDATE_CART_ITEM(state, item) {
             state.cart = state.cart.map((cart__item) => {
-                if(cart__item.id == item.id) {
+                if (cart__item.id == item.id) {
                     return item;
                 } else {
                     return cart__item;
                 }
             });
         },
+
+        // USER
+        SET_USER(state, user) {
+            state.user = user;
+        },
+
+        SET_SIGNED_IN(state, signedIn) {
+            state.signedIn = signedIn;
+        }
     },
     actions: {
         // PRODUCT ACTIONS
@@ -78,20 +98,31 @@ export default new Vuex.Store({
 
 
         // USERS ACTIONS
-        fetchUsers({ commit }) {
 
-            UserService.getUsers()
-                .then((response) => {
-                    commit("SET_USERS", response.data);
-                })
-                .catch((error) => {
-                    console.error(error.message);
-                });
+        logState({ commit}) {
+            
+            auth.onAuthStateChanged(
+                (user) => {
+                    commit('SET_USER', { loggedIn: true, data: user })
+                },
+                (error) => {
+                    console.log(error);
+                }
+            )
+            
         },
 
-        setUser({ commit}, user) {
-            commit("SET_USER", user);
+        logOut({ commit }) {
+
+            signOut(auth)
+                .then(() => {
+                    commit('SET_USER', { loggedIn: false, data: {} });
+                })
+                .catch(() => {
+                    console.log('Error logging out');
+                })
         }
+
     },
     modules: {
     }

@@ -2,7 +2,7 @@
 
     <div class="cart__container">
 
-        <div class="cart__wrapper">
+        <div class="cart__wrapper" v-if="isUserAlreadyLogged">
 
             <h1 class="cart__title">Products In Cart ({{ cartItems.length }})</h1>
 
@@ -25,6 +25,11 @@
 
             </div>
 
+        </div>
+
+        <div class="cart__wrapper error" v-else>
+            <h1 class="message">Login is required</h1>
+            <router-link to="/profile" class="button">Go To Profile</router-link>
         </div>
 
     </div>
@@ -64,6 +69,12 @@ export default {
             });
 
             return total;
+        },
+        user() {
+            return this.$store.getters.user;
+        },
+        isUserAlreadyLogged() {
+            return this.$store.getters.user.loggedIn;
         }
     }
 }
@@ -79,11 +90,33 @@ export default {
     .cart__wrapper {
 		height:100%;
         min-height: 100vh;
-		width: 100%;
+		width: calc(100% - 40px);
 		max-width: 1200px;
 		margin: 0px auto;
         color: var(--custom-color-light-1);
         padding-top: 100px;
+
+        &.error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .message {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            .button {
+                background-color: var(--custom-color-light-1);
+                padding: 10px 30px;
+                margin-top: 20px;
+                border-radius: 5px;
+                color: var(--custom-color-dark-1);
+                font-weight: 700;
+                text-decoration: none;
+            }
+        }
 
         .cart__title {
             text-align: center;
