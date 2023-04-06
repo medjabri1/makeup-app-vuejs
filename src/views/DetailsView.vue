@@ -38,6 +38,8 @@
                 </div>
             </div>
 
+            <ReviewsList v-if="product != undefined"></ReviewsList>
+
             <div v-else>
                 <h1>This product doesnt exist</h1>
             </div>
@@ -52,6 +54,7 @@
 import Rating from '@/components/Details/Rating/Rating.vue'
 import ProductColors from '@/components/Details/ProductColors/ProductColors.vue'
 import AddToCart from '@/components/Details/AddToCart/AddToCart.vue'
+import ReviewsList from '@/components/Details/ReviewsList/ReviewsList.vue'
 import ShareToSocialMedia from '@/components/Details/ShareToSocialMedia/ShareToSocialMedia.vue'
 import router from '@/router'
 
@@ -59,7 +62,7 @@ export default {
     name: 'DetailsView',
     props: {},
     components: {
-        Rating, ProductColors, AddToCart, ShareToSocialMedia
+        Rating, ProductColors, AddToCart, ShareToSocialMedia, ReviewsList
     },
     data() {
         return {

@@ -3,7 +3,7 @@
         <div class="featured__wrapper">
             <h1 class="section__title">Featured Products</h1>
             <div class="featured__content">
-                <card :product="product" v-for="product in products.slice(0, 4)" :key="product.id"></card>
+                <card class="card" :product="product" v-for="product in products.slice(0, 4)" :key="product.id"></card>
             </div>
             <router-link to="/browse" class="button see-all">See All Products</router-link>
         </div>
@@ -70,6 +70,7 @@ export default {
         } 
 
         .featured__content {
+            width: calc(100% - 40px);
             margin: 20px;
             height: 100%;
             display: grid;
