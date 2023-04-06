@@ -20,6 +20,7 @@
 import BillComponent from "@/components/Checkout/BillComponent/BillComponent.vue"
 import PaymentDetails from "@/components/Checkout/PaymentDetails/PaymentDetails.vue"
 import router from '@/router'
+import CartService from '@/Services/CartService'
 
 export default {
     components: {
@@ -27,8 +28,18 @@ export default {
     },
     methods: {
         paymentSubmit() {
+
+            this.cart.forEach((item) => {
+                this.$store.dispatch("removeItemFromCart", item);
+            });
+
             router.push('/confirmation')
         }, 
+    },
+    computed: {
+        cart() {
+            return this.$store.getters.cart;
+        },  
     }
 }
 </script>

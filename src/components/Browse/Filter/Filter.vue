@@ -27,6 +27,12 @@
 import { mapState } from 'vuex'
 export default {
     name: 'CustomFilter',
+    props: {
+        products: {
+            type: Array,
+            required: true
+        }
+    },  
 	data() {
 		return {
             selectedIndex: 0,
@@ -35,15 +41,15 @@ export default {
 		}
 	},
     computed: {
-        products() {
-            return this.$store.getters.products;
-        },
+        // products() {
+        //     return this.$store.getters.products;
+        // },
         categories() {
             let result = [];
             let found = [];
             let categories__arr = [];
 
-            this.$store.getters.products.map((item) => {
+            this.products.map((item) => {
                 categories__arr.push(item);
             });
             

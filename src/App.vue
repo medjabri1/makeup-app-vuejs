@@ -13,16 +13,24 @@ import Footer from "@/components/Footer.vue"
 
 import axios from "axios";
 
+import { auth } from "@/firebaseConfig.js";
+
 export default {
     name: 'HomeView',
     components: {
 		Header, Footer
 	},
+	mounted() {
+		auth.onAuthStateChanged((user) => {
+			if(user) {
+				this.$store.dispatch("logState");
+				this.$store.dispatch("fetchCartItems", user);
+			}
+		});
+	},
 	created() {
 		this.$store.dispatch("fetchProducts");
-		// this.$store.dispatch("fetchCartItems");
-		this.$store.dispatch("logState");
-	},
+	}
 }
 
 </script>

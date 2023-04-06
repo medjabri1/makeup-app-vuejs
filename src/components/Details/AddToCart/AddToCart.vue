@@ -6,9 +6,9 @@
         </h3>
         <div class="cart" v-if="isUserAlreadyLogged">
             <div class="cart__control">
-                <font-awesome-icon class="icon" :icon="['fas', 'plus']" @click="increase" />
-                <span class="cart__count">{{ cart__count }}</span>
                 <font-awesome-icon class="icon" :icon="['fas', 'minus']" @click="decrease"/>
+                <span class="cart__count">{{ cart__count }}</span>
+                <font-awesome-icon class="icon" :icon="['fas', 'plus']" @click="increase" />
             </div>
             <h3 class="add__to__cart" @click="submitAddToCart">
                 <font-awesome-icon class="icon" :icon="['fas', 'cart-plus']" />
@@ -40,6 +40,9 @@ export default {
         isUserAlreadyLogged() {
             return this.$store.getters.user.loggedIn;
         },
+        user() {
+            return this.$store.getters.user;
+        }
     },
     methods: {
         increase() {
@@ -52,40 +55,33 @@ export default {
         },
         submitAddToCart() {
 
-            let new__item = this.product;
-            new__item['productId'] = new__item['id'];
-            delete new__item['id'];
+            let item = {
+                ...this.product,
+                product_id: this.product.id,
+                quantity: this.cart__count,
+                user_id: this.$store.getters.user.data.uid,
+            }
 
-            let previous__item;
+            // delete item.id;
+
             let found = false;
+            let existing_item = {};
 
-            this.$store.getters.cart.map((cart__item) => {
-                console.log(cart__item.productId, new__item.productId);
-                if(cart__item.productId == new__item.productId) {
-                    previous__item = cart__item;
+            this.$store.getters.cart.map((cart_item) => {
+                if(cart_item.product_id === item.product_id) {
                     found = true;
+                    existing_item = {  ...cart_item, quantity: cart_item.quantity+item.quantity };
                 }
             });
 
-            if(!found) {
-                CartService.addItemToCart({...new__item, quantity: this.cart__count})
-                    .then(res => {
-                        this.$store.dispatch("fetchCartItems");
-                        this.$store.dispatch("fetchProducts");
-                    });
+            if(found) {
+                this.$store.dispatch("updateCartItem", existing_item);
             } else {
-                let new__data = { ...previous__item, quantity: previous__item.quantity+this.cart__count}
-
-                CartService.updateItem(new__data)
-                .then((res) => {
-                    this.loading = false;
-                    this.$store.dispatch("updateCartItem", new__data)
-                });
+                this.$store.dispatch("addToCart", item);
             }
 
-            this.cart__count = 0;
 
-
+            this.cart__count = 1;
         }
     }
 }

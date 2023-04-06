@@ -43,6 +43,12 @@ export default new Vuex.Store({
         SET_CART(state, cart) {
             state.cart = cart;
         },
+
+        ADD_TO_CART(state, item) {
+            // state.cart = { ...state.cart, item };
+            state.cart.push(item);
+        },
+
         REMOVE_CART_ITEM(state, id) {
             state.cart = state.cart.filter((item) => item.id != id);
         },
@@ -66,6 +72,7 @@ export default new Vuex.Store({
         }
     },
     actions: {
+
         // PRODUCT ACTIONS
         fetchProducts({ commit }, searchQuery) {
 
@@ -79,21 +86,49 @@ export default new Vuex.Store({
         },
 
         // CART ACTIONS
-        fetchCartItems({ commit }) {
+        fetchCartItems({ commit }, user) {
 
-            CartService.getCartItems()
-                .then((response) => {
-                    commit("SET_CART", response.data);
+            CartService.getCartItems(user.uid)
+                .then((res) => {
+                    commit("SET_CART", res);
+                    // console.log(res);
                 })
                 .catch((error) => {
-                    console.error(error.message);
-                });
+                    console.log(error);
+                })
         },
-        removeItemFromCart({ commit }, id) {
-            commit("REMOVE_CART_ITEM", id);
+
+        addToCart({ commit }, item) {
+                
+            CartService.addToCart(item)
+                .then((res) => {
+                    commit("ADD_TO_CART", item);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+
         },
+        
+        removeItemFromCart({ commit }, item) {
+            CartService.removeFromCart(item)
+                .then((res) => {
+                    commit("REMOVE_CART_ITEM", item.id);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        },
+
         updateCartItem({ commit }, item) {
-            commit("UPDATE_CART_ITEM", item);
+            // console.log(item.id);
+            CartService.updateCartItem(item)
+                .then((res) => {
+                    commit("UPDATE_CART_ITEM", item);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         },
 
 
@@ -103,10 +138,15 @@ export default new Vuex.Store({
             
             auth.onAuthStateChanged(
                 (user) => {
-                    commit('SET_USER', { loggedIn: true, data: user })
+                    if(user) {
+                        commit('SET_USER', { loggedIn: true, data: user })
+                    } else {
+                        commit('SET_USER', { loggedIn: false, data: {} })
+                    }
                 },
                 (error) => {
                     console.log(error);
+                    console.log('User not logged in');
                 }
             )
             
@@ -117,11 +157,12 @@ export default new Vuex.Store({
             signOut(auth)
                 .then(() => {
                     commit('SET_USER', { loggedIn: false, data: {} });
+                    console.log()
                 })
                 .catch(() => {
                     console.log('Error logging out');
                 })
-        }
+        },
 
     },
     modules: {

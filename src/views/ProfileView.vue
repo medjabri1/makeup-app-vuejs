@@ -20,7 +20,8 @@
             </div>
 
             <div v-else class="logged__profile__message">
-                <h1 class="message" v-if="loggedIn || isUserAlreadyLogged">You are now logged in</h1>
+                <h1 class="message" v-if="loggedIn || isUserAlreadyLogged">You are logged in as:</h1>
+                <h1 class="email" v-if="loggedIn || isUserAlreadyLogged">{{ user.data.email }}</h1>
                 <h3 class="log__out" @click="logOut">Log out</h3>
             </div>
 
@@ -112,6 +113,16 @@ export default {
                 // color: var(--custom-color-dark-1);
                 padding: 20px 40px;
                 border-radius: 2px;
+            }
+
+            .email {
+                font-size: 2.5rem;
+                font-weight: 800;
+                // background-color: var(--custom-color-light-1);
+                // color: var(--custom-color-dark-1);
+                padding: 20px 40px;
+                border-radius: 2px;
+                margin-bottom: 30px;
             }
             
             .log__out {

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@firebase/auth": "^0.22.0",
+    "@firebase/firestore": "^3.10.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",

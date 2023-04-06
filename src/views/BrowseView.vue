@@ -3,7 +3,7 @@
     <div class="browse__container">
 
         <div class="browse__wrapper">
-            <CustomFilter @categoryChange="categoryChange" @searchChange="searchChange"></CustomFilter>
+            <CustomFilter @categoryChange="categoryChange" @searchChange="searchChange" :products="products"></CustomFilter>
 			<ProductsList :products="this.products"></ProductsList>
         </div>
 
@@ -39,6 +39,14 @@ export default {
 				result = products.filter((item) => item.category === this.filter);
 			}
 
+			if(this.searchQuery.trim().length > 0) {
+				result = result.filter((item) => {
+					if(item.category.toLowerCase().includes(this.searchQuery) || item.title.toLowerCase().includes(this.searchQuery)) {
+						return item;
+					}
+				})
+			}
+
 			// console.log(this.filter);
 			// console.log(products.filter((item) => item.category === this.filter).length);
 
@@ -51,7 +59,8 @@ export default {
 			this.filter = category;
 		},
 		searchChange(query) {
-			this.$store.dispatch("fetchProducts", query);
+			// this.$store.dispatch("fetchProducts", query);
+			this.searchQuery = query.toLowerCase();
 		}
 	}
 }

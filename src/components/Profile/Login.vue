@@ -27,7 +27,11 @@
         <p class="error" v-if="hasError">{{ error }}</p>
 
         <div class="form__item">
-            <input type="submit" value="Log In">
+            <!-- <input type="submit" value="Log In"> -->
+            <button type="submit">
+                <span :class="{'hidden': loading}">Log In</span>
+                <img v-if="loading" class="loading__gif" src="@/assets/Icons/spinner.gif" alt="Loading Icon">
+            </button>
         </div>
 
     </form>
@@ -47,10 +51,18 @@ export default {
             hasError: false,
             error: '',
             loggedIn: false,
+            loading: false,
         }
     },
     methods: {
         onSubmit() {
+
+            if(this.loading) {
+                return;
+            }
+
+            this.loading = true;
+
             let user = {
                 email: this.login__email.trim(),
                 password: this.login__password,
@@ -59,6 +71,7 @@ export default {
             if(user.email.length < 1 || user.password.length < 1) {
                 this.hasError = true;
                 this.error = 'Please fill all fields';
+                this.loading = false;
                 return;
             }
 
@@ -68,12 +81,14 @@ export default {
                     this.$emit("loggedIn");
 
                     this.$store.dispatch("logState");
+                    this.loading = false;
                 })
                 .catch((err) => {
                     console.log(err);
                     let message = err.code;
                     this.hasError = true;
                     this.error = message;
+                    this.loading = false;
                     return;
                 });
         }
@@ -170,6 +185,39 @@ export default {
                 &:hover {
                     opacity: .9;
                 }
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            outline: none;
+            border: 2px solid #000000bb;
+            color: var(--custom-color-dark-1);
+            background-color: var(--custom-color-dark-1);
+            color: var(--custom-color-light-1);
+            text-transform: uppercase;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 200ms ease-in-out;
+            margin-top: 20px;
+            position: relative;
+
+            &:hover {
+                opacity: .9;
+            }
+            
+            span.hidden {
+                visibility: hidden;
+            }
+
+            .loading__gif {
+                height: 30px;
+                width: 30px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
         }
     }

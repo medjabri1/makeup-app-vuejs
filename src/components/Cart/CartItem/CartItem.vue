@@ -5,7 +5,7 @@
         </div>
 
         <div class="section info">
-            <router-link class="product__name" :to="'/details/'+ item.productId">{{ item.title }}</router-link>
+            <router-link class="product__name" :to="'/details/'+ item.product_id">{{ item.title }}</router-link>
             <p class="unit__price">Unit: <span>{{ price.toFixed(2) }} $</span></p>
             <p class="total__price">Total: <span>{{ (price * item.quantity).toFixed(2) }} $</span></p>
         </div>
@@ -62,12 +62,8 @@ export default {
             }
 
             this.loading = true;
-
-            CartService.deleteItemFromCart(id)
-                .then((res) => {
-                    this.loading = false;
-                    this.$store.dispatch("removeItemFromCart", id)
-                });
+            this.$store.dispatch("removeItemFromCart", this.item);
+            this.loading = false;
         },
         changeQuantity(id, quantity) {
 
@@ -78,20 +74,18 @@ export default {
 
             this.loading = true;
 
-            let newQuantity = this.item.quantity + quantity;
+            let newQuantity = quantity > 0 ? Number(this.item.quantity)+1 : Number(this.item.quantity)-1;
 
-            if((newQuantity < 1 && newQuantity < this.item.quantity) || (newQuantity > 10 && newQuantity > this.item.quantity)) {
+            if((newQuantity < 1) || (newQuantity > 10 && newQuantity && newQuantity > this.item.quantity)) {
                 this.loading = false;
                 return;
-            } 
+            }
 
             let new__item = { ...this.item, quantity: newQuantity };
 
-            CartService.updateItem(new__item)
-                .then((res) => {
-                    this.loading = false;
-                    this.$store.dispatch("updateCartItem", new__item)
-                });
+            this.$store.dispatch("updateCartItem", new__item);
+
+            this.loading = false;
         }
     }
 }

@@ -75,9 +75,6 @@ export default {
     computed: {
         product() {
             let product = this.$store.getters.products.filter(product => product.id == this.id)[0];
-            if(product == undefined) {
-                // router.push('/Not-Found')
-            }
             return product;
         }
     }

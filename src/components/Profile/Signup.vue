@@ -36,7 +36,11 @@
         <p class="error" v-if="hasError">{{ error }}</p>
 
         <div class="form__item">
-            <input type="submit" :value="loading ? 'Loading' : 'Submit'" :disabled="loading">
+            <!-- <input type="submit" :value="loading ? 'Loading' : 'Submit'" :disabled="loading"> -->
+            <button type="submit">
+                <span :class="{'hidden': loading}">Sign up</span>
+                <img v-if="loading" class="loading__gif" src="@/assets/Icons/spinner.gif" alt="Loading Icon">
+            </button>
         </div>
 
     </form>
@@ -54,11 +58,18 @@ export default {
             signup__password: '',
             loading: false,
             hasError: false,
-            error: ''
+            error: '',
+            loading: false,
         }
     },
     methods: {
         onSubmit() {
+
+            if(this.loading) {
+                return;
+            }
+
+            this.loading = true;
 
             let user = {
                 name: this.signup__name.trim(),
@@ -69,16 +80,19 @@ export default {
             if(user.name.length < 1 || user.email.length < 1 || user.password.length < 1) {
                 this.hasError = true;
                 this.error = 'Please fill all the fields';
+                this.loading = false;
                 return;
             }
-                
+            
             UserService.register(user)
-                .then((res) => {
+            .then((res) => {
                     console.log(res);
+                    this.loading = false;
                 })
                 .catch((err) => {
                     this.hasError = true;
                     this.error = err.code;
+                    this.loading = false;
                 })
 
         }
@@ -170,6 +184,39 @@ export default {
                 &:hover {
                     opacity: .9;
                 }
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            outline: none;
+            border: 2px solid #000000bb;
+            color: var(--custom-color-dark-1);
+            background-color: var(--custom-color-dark-1);
+            color: var(--custom-color-light-1);
+            text-transform: uppercase;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 200ms ease-in-out;
+            margin-top: 20px;
+            position: relative;
+
+            &:hover {
+                opacity: .9;
+            }
+            
+            span.hidden {
+                visibility: hidden;
+            }
+
+            .loading__gif {
+                height: 30px;
+                width: 30px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
         }
     }

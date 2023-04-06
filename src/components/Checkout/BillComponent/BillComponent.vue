@@ -1,9 +1,9 @@
 <template>
 
     <div class="bill">
-        <h3 class="items__count">Items: <span>3</span></h3>
+        <h3 class="items__count">Items: <span>{{ cart.length }}</span></h3>
         <h3 class="divider">---</h3>
-        <h3 class="total__price">Total: <span>560 $</span></h3>
+        <h3 class="total__price">Total: <span>{{ total.toFixed(2) }} $</span></h3>
     </div>
 
 </template>
@@ -11,7 +11,29 @@
 <script>
 export default {
     name: 'BillComponent',
+    computed: {
+        cart() {
+            return this.$store.getters.cart;
+        },
+        total() {
+            
+            let items = this.cart;
 
+            let total = 0;
+
+            items.map(item => {
+
+                if(item.onSale) {
+                    total += (item.price - (item.price * item.salePercent / 100)) * item.quantity;
+                } else {
+                    total += (item.price * item.quantity);
+                }
+
+            });
+
+            return total;
+        },
+    }
 }
 </script>
 
