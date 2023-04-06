@@ -6,10 +6,23 @@
 
         <div class="review__item">
             <div class="review__cover">
-                <img src="https://rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png" alt="Avatar">
+                <img src="https://images.hola.com/us/images/027f-178a927a5d20-e07f8caf632b-1000/horizontal-1200/23rd-annual-latin-grammy-awards-arrivals.jpg" alt="Avatar">
             </div>
             <div class="review__info">
-                <h1 class="username">Mohammed JABRI</h1>
+                <h1 class="username">Georgina Rodriguez</h1>
+                <rating class="rating"></rating>
+                <p class="content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
+                </p>
+            </div>
+        </div>
+
+        <div class="review__item">
+            <div class="review__cover">
+                <img src="https://sportsmax.tv/media/k2/items/cache/6b899788fc33f473be783690504eeb59_XL.jpg" alt="Avatar">
+            </div>
+            <div class="review__info">
+                <h1 class="username">Federico Valverde</h1>
                 <rating class="rating"></rating>
                 <p class="content">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
@@ -22,7 +35,7 @@
                 <img src="https://rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png" alt="Avatar">
             </div>
             <div class="review__info">
-                <h1 class="username">Mohammed JABRI</h1>
+                <h1 class="username">Generic User</h1>
                 <rating class="rating"></rating>
                 <p class="content">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
@@ -32,23 +45,10 @@
 
         <div class="review__item">
             <div class="review__cover">
-                <img src="https://rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png" alt="Avatar">
+                <img src="https://i.insider.com/613dff19a30aeb0018b52264?width=700" alt="Avatar">
             </div>
             <div class="review__info">
-                <h1 class="username">Mohammed JABRI</h1>
-                <rating class="rating"></rating>
-                <p class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
-                </p>
-            </div>
-        </div>
-
-        <div class="review__item">
-            <div class="review__cover">
-                <img src="https://rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png" alt="Avatar">
-            </div>
-            <div class="review__info">
-                <h1 class="username">Mohammed JABRI</h1>
+                <h1 class="username">Lana Del Rey</h1>
                 <rating class="rating"></rating>
                 <p class="content">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
