@@ -112,31 +112,5 @@
         "https://images.unsplash.com/photo-1650664370914-f026578ec2a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=769&q=80"
       ]
     }
-  ],
-  "cart": [
-    {
-      "title": "Eyeshadow Palette",
-      "category": "eye",
-      "price": 300.99,
-      "onSale": false,
-      "image": "https://images.unsplash.com/photo-1621151927841-ac2ee62f0333?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-      "salePercent": 0,
-      "imgs": [
-        "https://images.unsplash.com/photo-1621151927841-ac2ee62f0333?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-        "https://images.unsplash.com/photo-1617220376311-1b90accbb9e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-        "https://images.unsplash.com/photo-1621151927841-ac2ee62f0333?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
-      ],
-      "quantity": 10,
-      "id": 3
-    }
-  ],
-  "users": [
-    {
-      "first_name": "Mohammed",
-      "last_name": "JABRI",
-      "email": "test@gmail.com",
-      "password": "test",
-      "id": 1
-    }
   ]
 }

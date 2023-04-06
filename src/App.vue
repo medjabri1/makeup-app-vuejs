@@ -19,7 +19,7 @@ export default {
 		Header, Footer
 	},
 	created() {
-		// this.$store.dispatch("fetchProducts");
+		this.$store.dispatch("fetchProducts");
 		// this.$store.dispatch("fetchCartItems");
 		this.$store.dispatch("logState");
 	},
