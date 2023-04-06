@@ -8,7 +8,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse Category</button>
+					<router-link to="/browse/eye" class="section__details">Browse Category</router-link>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -26,7 +26,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse Category</button>
+					<router-link to="/browse/face" class="section__details">Browse Category</router-link>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -44,7 +44,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse Category</button>
+					<router-link to="/browse/lips" class="section__details">Browse Category</router-link>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -62,7 +62,7 @@
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
 						odit delectus qui dolores sint. Exercitationem?
 					</p>
-					<button class="section__details">Browse Category</button>
+					<router-link to="/browse/lips" class="section__details">Browse Category</router-link>
 				</div>
 				<div class="section flex-1">
 					<div class="image__container">
@@ -144,7 +144,7 @@ export default {};
 					}
 
 					.section__details {
-						font-size: 1rem;
+						font-size: .9rem;
 						text-transform: uppercase;
 						margin-top: 20px;
 						padding: 10px 20px;
@@ -156,6 +156,8 @@ export default {};
 						border-radius: 2px;
 						transition: all 200ms ease-in-out;
 						cursor: pointer;
+						color: var(--custom-color-dark-3);
+						text-decoration: none;
 
 						&:hover {
 							background-color: var(--custom-color-light-3);

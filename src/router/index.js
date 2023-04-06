@@ -25,6 +25,12 @@ const routes = [
 		meta: { title: 'Gleaming - Browse' }
 	},
 	{
+		path: '/browse/:category',
+		name: 'browse-category',
+		component: BrowseView,
+		meta: { title: 'Gleaming - Browse' }
+	},
+	{
 		path: '/details/:id',
 		name: 'Details',
 		component: DetailsView,

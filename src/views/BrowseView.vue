@@ -3,7 +3,7 @@
     <div class="browse__container">
 
         <div class="browse__wrapper">
-            <CustomFilter @categoryChange="categoryChange" @searchChange="searchChange" :products="products"></CustomFilter>
+            <CustomFilter @categoryChange="categoryChange" @searchChange="searchChange" @resetFilter="resetFilter" :products="products" ></CustomFilter>
 			<ProductsList :products="this.products"></ProductsList>
         </div>
 
@@ -22,7 +22,8 @@ export default {
 	data() {
 		return {
 			filter: 'all',
-			searchQuery: ''
+			searchQuery: '',
+			selectedCategory: this.$route.params.category,
 		}
 	},
 	components: {
@@ -30,13 +31,19 @@ export default {
 	},
 	computed: {
 		products() {
+
 			let products = this.$store.getters.products;
 			let result = [];
+
 
 			if(this.filter == 'all' || this.filter == '') {
 				result = products;
 			} else {
 				result = products.filter((item) => item.category === this.filter);
+			}
+
+			if(['eye', 'lips', 'face'].indexOf(this.categoryInRoute) >= 0) {
+				result = result.filter((item) => item.category.includes(this.categoryInRoute));
 			}
 
 			if(this.searchQuery.trim().length > 0) {
@@ -47,11 +54,10 @@ export default {
 				})
 			}
 
-			// console.log(this.filter);
-			// console.log(products.filter((item) => item.category === this.filter).length);
-
-			// console.log(result);
 			return result;
+		},
+		categoryInRoute() {
+			return this.$route.params.category;
 		}
 	},
 	methods: {
@@ -61,6 +67,11 @@ export default {
 		searchChange(query) {
 			// this.$store.dispatch("fetchProducts", query);
 			this.searchQuery = query.toLowerCase();
+		},
+		resetFilter() {
+			this.searchQuery = "";
+			this.filter = "all";
+			this.$router.replace('/browse');
 		}
 	}
 }

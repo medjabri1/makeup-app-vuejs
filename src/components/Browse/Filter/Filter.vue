@@ -18,6 +18,7 @@
                     <span class="count">{{ category.count }}</span>
                 </h2>
             </div>
+            <h3 class="reset__filter" @click="resetFilter">x Reset Filter</h3>
         </div>
     </div>
 
@@ -74,6 +75,11 @@ export default {
         onChange(e) {
             this.searchQuery = e.target.value;
             this.$emit('searchChange', this.searchQuery);
+        },
+        resetFilter() {
+            this.$emit('resetFilter');
+            this.searchQuery = '';
+            this.selectedIndex = 0;
         }
     }
 }
@@ -121,6 +127,24 @@ export default {
                 border: 2px solid var(--custom-color-light-3);
                 border-radius: 3px;
                 font-family: 'Nunito', sans-serif;
+            }
+        }
+
+        .reset__filter {
+            padding: 10px 30px;
+            background-color: #FFFFFF22;
+            color: var(--custom-color-light-1);
+            margin-top: 30px;
+            font-size: 1rem;
+            align-self: center;
+            opacity: .7;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 200ms ease-in-out;
+            user-select: none;
+
+            &:hover {
+                opacity: .8;
             }
         }
 
