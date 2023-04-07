@@ -78,6 +78,19 @@ export default {
             return this.$store.getters.reviews;
         },
     },
+    watch: {
+        '$store.getters.reviews': {
+            handler() {
+                let average_review = 0;
+
+                this.reviews.map((review) => {
+                    average_review += review.rating / this.reviews.length;
+                });
+
+                this.$emit('averageReviewChange', average_review);
+            },
+        }
+    },
     methods: {
         rateChange(rate) {
             this.new__rating = rate;

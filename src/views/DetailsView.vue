@@ -22,7 +22,7 @@
                     <div class="section">
                         <h1 class="product__name">{{ product.title }}</h1>
 
-                        <Rating></Rating>
+                        <Rating :fixedRating="this.averageReview"></Rating>
 
                         <p class="product__description">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem ipsum quae omnis repellendus quia
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <ReviewsList v-if="product != undefined" :product="this.product"></ReviewsList>
+            <ReviewsList v-if="product != undefined" :product="this.product" @averageReviewChange="averageReviewChange"></ReviewsList>
 
             <div v-else>
                 <h1>This product doesnt exist</h1>
@@ -67,12 +67,16 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
-            selectedImage: 0
+            selectedImage: 0,
+            averageReview: 5
         }
     },
     methods: {
         selectImage(index) {
             this.selectedImage = index;
+        },
+        averageReviewChange(current) {
+            this.averageReview = current;
         }
     },
     computed: {
