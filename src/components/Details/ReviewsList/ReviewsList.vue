@@ -2,57 +2,44 @@
     
     <div class="reviews__container">
 
-        <h1 class="section__title">Reviews list (4)</h1>
+        <h1 class="section__title">Reviews list ({{ reviews.length }})</h1>
 
-        <div class="review__item">
-            <div class="review__cover">
-                <img src="https://images.hola.com/us/images/027f-178a927a5d20-e07f8caf632b-1000/horizontal-1200/23rd-annual-latin-grammy-awards-arrivals.jpg" alt="Avatar">
-            </div>
-            <div class="review__info">
-                <h1 class="username">Georgina Rodriguez</h1>
-                <rating class="rating"></rating>
-                <p class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
-                </p>
-            </div>
+        <div class="add__review">
+            <form @submit.prevent="addReviewSubmit" id="new__form">
+                
+                <rating class="rating" :clickable="true" @rateChange="rateChange"></rating>
+                
+                <div class="form__item">
+                    <label for="new__username">Username</label>
+                    <input type="text" id="new__username" v-model="new__username" placeholder="Enter your name">
+                </div>
+
+                <div class="form__item">
+                    <label for="new__content">Review Content</label>
+                    <textarea type="text" id="new__content" v-model="new__content" placeholder="Your review content..."></textarea>
+                </div>
+
+                <div class="form__item">
+                    <button type="submit">
+                        <span :class="{'hidden': loading}">Submit</span>
+                        <img v-if="loading" class="loading__gif" src="@/assets/Icons/spinner.gif" alt="Loading Icon">
+                    </button>
+                </div>
+            </form>
         </div>
 
-        <div class="review__item">
-            <div class="review__cover">
-                <img src="https://sportsmax.tv/media/k2/items/cache/6b899788fc33f473be783690504eeb59_XL.jpg" alt="Avatar">
-            </div>
-            <div class="review__info">
-                <h1 class="username">Federico Valverde</h1>
-                <rating class="rating"></rating>
-                <p class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
-                </p>
-            </div>
-        </div>
-
-        <div class="review__item">
-            <div class="review__cover">
-                <img src="https://rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png" alt="Avatar">
-            </div>
-            <div class="review__info">
-                <h1 class="username">Generic User</h1>
-                <rating class="rating"></rating>
-                <p class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
-                </p>
-            </div>
-        </div>
-
-        <div class="review__item">
-            <div class="review__cover">
-                <img src="https://i.insider.com/613dff19a30aeb0018b52264?width=700" alt="Avatar">
-            </div>
-            <div class="review__info">
-                <h1 class="username">Lana Del Rey</h1>
-                <rating class="rating"></rating>
-                <p class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa at porro tempora nemo, natus assumenda doloribus ut ducimus veritatis.
-                </p>
+        <div class="reviews__list">
+            <div class="review__item" v-for="(review, index) in reviews" :key="index">
+                <div class="review__cover">
+                    <img src="https://www.shareicon.net/data/2016/05/26/771188_man_512x512.png" alt="Avatar">
+                </div>
+                <div class="review__info">
+                    <h1 class="username">{{ review.username }}</h1>
+                    <rating class="rating" :fixedRating="review.rating"></rating>
+                    <p class="content">
+                        {{ review.content }}
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -65,6 +52,66 @@ import Rating from "@/components/Details/Rating/Rating.vue";
 export default {
     components: {
         Rating
+    },
+    props: {
+        product: {
+            type: Object,
+            required: true,
+        }
+    },  
+    data() {
+        return {
+            new__username: '',
+            new__rating: 4,
+            new__content: '',
+            loading: false
+        }
+    },
+    mounted() {
+        this.$store.dispatch('fetchProductReviews', this.product.id);
+    },
+    created() {
+        this.$store.dispatch('emptyReviewsState');
+    },
+    computed: {
+        reviews() {
+            return this.$store.getters.reviews;
+        },
+    },
+    methods: {
+        rateChange(rate) {
+            this.new__rating = rate;
+        },
+        resetForm() {
+            this.new__username = '';
+            this.new__content = '';
+        },
+        addReviewSubmit() {
+
+            if(this.loading) {
+                return;
+            }
+
+            if(this.new__username.trim().length < 1 || this.new__content.trim().length < 1) {
+                return;
+            }
+
+            this.loading = true;
+
+            let data = {
+                product_id: this.product.id,
+                username: this.new__username,
+                content: this.new__content,
+                rating: this.new__rating,
+            }
+
+            this.$store.dispatch("addReview", data)
+
+            this.resetForm();
+
+            this.loading = false;
+
+        },
     }
 }
 </script>
@@ -78,9 +125,11 @@ export default {
     color: var(--custom-color-dark-1);
     border-radius: 10px;
     padding: 40px 20px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
 
     .section__title {
         grid-column: span 2;
@@ -90,67 +139,150 @@ export default {
         text-align: center;
     }
 
-    .review__item {
-        width: 100%;
+    .add__review {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: start;
-        background-color: var(--custom-color-light-1);
-        padding: 10px;
-        box-shadow: 0px 0px 2px #00000022, 0px 0px 8px #00000022;
-        border-radius: 5px;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 30px;
 
-        .review__cover {
-            height: 80px;
-            width: 80px;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0px 0px 2px #00000022, 0px 0px 8px #00000022;
-            margin-right: 20px;
-            
-            img {
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
-                height: 100%;
-                max-height: 80px;
-            }
-        }
-
-        .review__info {
+        form {
             width: 100%;
+            max-width: 900px;
+            background-color: var(--custom-color-light-1);
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: start;
             justify-content: start;
+            border-radius: 5px;
+            box-shadow: 0px 0px 2px #00000022, 0px 0px 8px #00000022;
 
-            .rating {
-                font-size: .7rem;
-                margin-bottom: -20px;
-            }
+            .form__item {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                justify-content: start;
+                width: 100%;
+                margin-bottom: 20px;
+
+                label {
+                    font-size: .9rem;
+                    opacity: .8;
+                    font-weight: 600;
+                    margin-bottom: px;
+                }
+
+                input, textarea, button {
+                    font-size: .9rem;
+                    padding: 8px;
+                    outline: none;
+                    border: none;
+                    border-radius: 3px;
+                    box-shadow: 0px 0px 2px #00000022, 0px 0px 8px #00000022;
+                    resize: none;
+                    width: 100%;
+                    margin-top: 5px;
+                    font-weight: 400;
+                    font-family: inherit !important;
+
+                    &:focus {
+                        box-shadow: 0px 0px 2px #190c4d55, 0px 0px 8px #190c4d55;
+                    }
+                }
+
+                button {
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    background-color: var(--custom-color-dark-1);
+                    color: var(--custom-color-light-1);
+                    transition: all 200ms ease-in-out;
+                    cursor: pointer;
+                    position: relative;
+
+                    &:hover {
+                        opacity: .9;
+                    }
             
+                    span.hidden {
+                        visibility: hidden;
+                    }
 
-            .username {
-                font-size: 1.1rem;
-            }
-
-            .content {
-                font-size: 1rem;
-                opacity: .7;
+                    .loading__gif {
+                        height: 30px;
+                        width: 30px;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
             }
         }
     }
+
+    .reviews__list {        
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+
+        .review__item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            background-color: var(--custom-color-light-1);
+            padding: 15px 10px;
+            box-shadow: 0px 0px 2px #00000022, 0px 0px 8px #00000022;
+            border-radius: 5px;
+    
+            .review__cover {
+                height: 80px;
+                width: 80px;
+                overflow: hidden;
+                margin-right: 20px;
+                
+                img {
+                    object-fit: cover;
+                    height: 100%;
+                    width: 100%;
+                    box-shadow: 0px 0px 2px #00000022, 0px 0px 8px #00000022;
+                    border-radius: 50%;
+                }
+            }
+    
+            .review__info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                justify-content: start;
+    
+                .rating {
+                    font-size: .7rem;
+                    margin-bottom: -20px;
+                }
+                
+    
+                .username {
+                    font-size: 1.1rem;
+                }
+    
+                .content {
+                    font-size: .9rem;
+                    opacity: .7;
+                }
+            }
+        }
+    }
+
 }
 
 @media screen and (max-width: 900px) {
     
-    .reviews__container {
-        
-        grid-template-columns: repeat(1, 1fr);
-
-        .section__title {
-            grid-column: span 1;
-        }
+    .reviews__list {
+        grid-template-columns: repeat(1, 1fr) !important;
     }
 }
 

@@ -13,6 +13,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
 import { auth } from "@/firebaseConfig";
+import ReviewService from '@/Services/ReviewService';
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     state: {
         products: [],
         cart: [],
+        reviews: [],
         user: {
             loggedIn: false,
             data: {}
@@ -29,6 +31,7 @@ export default new Vuex.Store({
     getters: {
         products: (state) => state.products,
         cart: (state) => state.cart,
+        reviews: (state) => state.reviews,
         user: (state) => state.user,
         signedIn: (state) => state.signedIn,
     },
@@ -69,6 +72,19 @@ export default new Vuex.Store({
 
         SET_SIGNED_IN(state, signedIn) {
             state.signedIn = signedIn;
+        },
+
+        // REVIEWS
+        EMPTY_REVIEWS(state) {
+            state.reviews = [];
+        },
+
+        SET_REVIEWS(state, reviews) {
+            state.reviews = reviews
+        },
+
+        ADD_REVIEW(state, review) {
+            state.reviews.push(review);
         }
     },
     actions: {
@@ -163,6 +179,33 @@ export default new Vuex.Store({
                     console.log('Error logging out');
                 })
         },
+
+        // REVIEWS ACTIONS
+
+        fetchProductReviews({ commit }, product_id) {
+
+            ReviewService.getProductReviews(product_id)
+                .then((res) => {
+                    commit("SET_REVIEWS", res);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        addReview({ commit }, item) {
+            ReviewService.addReview(item)
+                .then((res) => {
+                    commit("ADD_REVIEW", item);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        emptyReviewsState({ commit }) {
+            commit("EMPTY_REVIEWS");
+        }
 
     },
     modules: {

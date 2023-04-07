@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <ReviewsList v-if="product != undefined"></ReviewsList>
+            <ReviewsList v-if="product != undefined" :product="this.product"></ReviewsList>
 
             <div v-else>
                 <h1>This product doesnt exist</h1>
